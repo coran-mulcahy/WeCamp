@@ -1,2 +1,2 @@
 # YelpCamp
-Final project for the Modern Web Developer Bootcamp
+A large scale web application to view hand-picked campgrounds from all over the world!
