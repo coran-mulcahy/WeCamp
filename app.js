@@ -3,6 +3,7 @@ const express = require("express"),
    bodyParser = require("body-parser"),
    mongoose = require("mongoose");
 
+// pasted from mongoose docs to prevent error warnings when starting server...
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
