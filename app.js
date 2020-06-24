@@ -1,7 +1,9 @@
 const express = require("express"),
    app = express(),
    bodyParser = require("body-parser"),
-   mongoose = require("mongoose");
+   mongoose = require("mongoose"),
+   Campground = require("./models/campgrounds");
+seedDB = require("./seeds");
 
 // pasted from mongoose docs to prevent error warnings when starting server...
 mongoose.set("useNewUrlParser", true);
@@ -11,35 +13,10 @@ mongoose.set("useUnifiedTopology", true);
 
 mongoose.connect("mongodb://localhost/WeCamp");
 
-// Schema set-up for mongoose
-const campgroundSchema = new mongoose.Schema({
-   name: String,
-   image: String,
-   description: String,
-});
-
-const Campground = mongoose.model("Campground", campgroundSchema);
-
-// Campground.create(
-//    {
-//       name: "Halls Gap",
-//       image:
-//          "https://pixabay.com/get/52e5d7414355ac14f1dc84609620367d1c3ed9e04e50744075267bd69e49c6_340.jpg",
-//       description: "This is an amazing campground! Beautiful location.",
-//    },
-//    (err, campground) => {
-//       if (err) {
-//          console.log("Something went wrong...");
-//          console.log(err);
-//       } else {
-//          console.log("Added campground to database!");
-//          console.log(campground);
-//       }
-//    }
-// );
-
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+
+seedDB();
 
 app.get("/", (req, res) => {
    res.render("landing");
@@ -86,15 +63,17 @@ app.post("/campgrounds", (req, res) => {
 // SHOW - shows more info about one campground
 app.get("/campgrounds/:id", (req, res) => {
    // find campground with provided ID
-   Campground.findById(req.params.id, (err, foundCampground) => {
-      if (err) {
-         console.log("Something went wrong...");
-         console.log(err);
-      } else {
-         // render show template with that campground
-         res.render("show", { campground: foundCampground });
-      }
-   });
+   Campground.findById(req.params.id)
+      .populate("comments")
+      .exec((err, foundCampground) => {
+         if (err) {
+            console.log("Something went wrong...");
+            console.log(err);
+         } else {
+            // render show template with that campground
+            res.render("show", { campground: foundCampground });
+         }
+      });
 });
 
 app.listen(3000, (req, res) => {
