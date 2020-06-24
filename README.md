@@ -1,9 +1,11 @@
 # WeCamp
 
-A large scale web application to view hand-picked campgrounds from all over the world!
+A large scale web application to view hand-picked campgrounds from all over Victoria, Australia!
 
 Technologies used:
-- NodeJS
+
 - MongoDB
-- ExpressJS
+- Express
 - Bootstrap
+- NodeJS
+
